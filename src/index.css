@@ -1,0 +1,214 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  /* justify-content: center;
+  align-items: center; */
+  background-color: antiquewhite;
+}
+
+.calendar-container {
+  background: #fff;
+  width: 800px;
+  border-radius: 10px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.calendar-container header {
+  display: flex;
+  align-items: center;
+  padding: 20px 30px 0px;
+  justify-content: space-between;
+}
+
+header .calendar-navigation {
+  display: flex;
+}
+
+header .calendar-navigation span {
+  height: 38px;
+  width: 38px;
+  margin: 0 1px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 38px;
+  border-radius: 50%;
+  user-select: none;
+  color: #aeabab;
+  font-size: 3rem;
+}
+
+.calendar-navigation span:last-child {
+  margin-right: -10px;
+}
+
+header .calendar-navigation span:hover {
+  background: #f2f2f2;
+}
+
+header .calendar-current-date {
+  font-weight: 500;
+  margin-left: 30px;
+  font-size: 1.6rem;
+}
+
+.calendar-body {
+  padding: 20px;
+}
+
+.calendar-body ul {
+  list-style: none;
+  flex-wrap: wrap;
+  display: flex;
+  text-align: center;
+}
+
+.calendar-body .calendar-dates {
+  margin-bottom: 20px;
+}
+
+.calendar-body li {
+  width: calc(100% / 7);
+  font-size: 1.5rem;
+  color: #414141;
+}
+
+.calendar-body .calendar-weekdays li {
+  cursor: default;
+  font-weight: 500;
+}
+
+.calendar-body .calendar-dates li {
+  margin-top: 30px;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.calendar-dates li.inactive {
+  color: #aaa;
+}
+
+.calendar-dates li.active {
+  color: #fff;
+}
+
+.calendar-dates li::before {
+  position: absolute;
+  content: "";
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 105px;
+  height: 69px;
+  border: 2px solid black;
+  border-radius: 10px;
+
+  transform: translate(-50%, -50%);
+}
+
+.calendar-dates li.active::before {
+  background: #6332c5;
+}
+.calendar-dates li.borderActive::before {
+  border: 4px solid red;
+}
+.calendar-dates li.click::before {
+  background: green;
+}
+
+.calendar-dates li:not(.active, .click):hover::before {
+  background: #e4e1e1;
+}
+button1 {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: orange;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 17px;
+  padding: 5px;
+  width: 110px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+button1 span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+button1 span:after {
+  content: "»";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -15px;
+  transition: 0.5s;
+}
+
+button1:hover span {
+  padding-right: 15px;
+}
+
+button1:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+button2 {
+  --color: green;
+  font-family: inherit;
+
+  width: 6em;
+  height: 2em;
+  line-height: 2.5em;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--color);
+  transition: color 0.5s;
+  z-index: 1;
+  font-size: 17px;
+  border-radius: 0 6px 6px 0;
+  font-weight: 500;
+  color: var(--color);
+}
+
+button2:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: var(--color);
+  height: 150px;
+  width: 200px;
+  border-radius: 50%;
+}
+
+button2:hover {
+  color: #fff;
+}
+
+button2:before {
+  top: 100%;
+  left: 100%;
+  transition: all 0.7s;
+}
+
+button2:hover:before {
+  top: -30px;
+  left: -30px;
+}
+
+button2:active:before {
+  background: #3a0ca3;
+  transition: background 0s;
+}
