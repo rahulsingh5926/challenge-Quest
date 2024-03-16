@@ -8,11 +8,9 @@ import { Routes, Route } from "react-router-dom";
 function App() {
   return (
     <>
-      {/* <MyCalendar />
-      <AddGoals /> */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/MyCalendar" element={<MyCalendar />} />
+        <Route path="/myCalendar" element={<MyCalendar />} />
       </Routes>
     </>
   );

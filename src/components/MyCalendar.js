@@ -15,10 +15,8 @@ import Progress from "./Progress";
 import WeeklyGoals from "./WeeklyGoal";
 let array;
 let i = 0;
+
 function MyCalendar() {
-  // const location = useLocation();
-  const dateSt = "10-03-2024";
-  const dateEd = "20-03-2024";
   const a = collection(db, "accomplish");
 
   const [currMonth, setCurrMonth] = useState("");
@@ -34,7 +32,8 @@ function MyCalendar() {
   const [clickedDates, setClickedDates] = useState([]);
   const [cond, setCond] = useState(false);
   const [count, setCount] = useState(0);
-
+  const [dateSt, setDateSt] = useState("");
+  const [dateEd, setDateEd] = useState("");
   const months = [
     "January",
     "February",
@@ -50,6 +49,29 @@ function MyCalendar() {
     "December",
   ];
   console.log(months.includes("march"));
+  const startCollectionRef = collection(db, "startdate");
+  const endCollectionRef = collection(db, "enddate");
+  const location = useLocation();
+  console.log(location);
+  const fetchStartDate = async () => {
+    const data = await getDocs(startCollectionRef);
+    const filteredData = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    setDateSt(filteredData[0].startQuestDate.split("-").reverse().join("-"));
+  };
+
+  const fetchEndDate = async () => {
+    const data = await getDocs(endCollectionRef);
+    const filteredData = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    setDateEd(filteredData[0].endQuestDate.split("-").reverse().join("-"));
+  };
   function update() {
     setIndex(31);
     const currentDate1 = new Date();
@@ -116,6 +138,8 @@ function MyCalendar() {
 
   useEffect(() => {
     update();
+    fetchStartDate();
+    fetchEndDate();
   }, []);
 
   const manipulate = () => {
@@ -395,11 +419,14 @@ function MyCalendar() {
                             isClicked === true ? "click" : ""
                           } ${isActive}`}
                           onClick={() => {
-                            if(isToday)isClicked === false ? setClick(id) : deleteEvent(x);
+                            if (isToday)
+                              isClicked === false
+                                ? setClick(id)
+                                : deleteEvent(x);
                           }}
                         >
                           {" "}
-                          {isClicked &&  <div>&#10060;</div>}
+                          {isClicked && <div>&#10060;</div>}
                           {!isClicked && elem}
                         </li>
                       );

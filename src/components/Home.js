@@ -8,9 +8,9 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import MyCalendar from "./MyCalendar";
-
+import { useLocation } from "react-router-dom";
 function Home() {
   const [startQuestDate, setStartQuestDate] = useState("");
   const [endQuestDate, setEndQuestDate] = useState("");
@@ -162,7 +162,7 @@ function Home() {
               if (!startId) setStartId(item.id);
               return (
                 <span style={{ color: "red" }} key={item.id}>
-                  {item.startQuestDate}
+                  {item.startQuestDate.split("-").reverse().join("-")}
                 </span>
               );
             })}{" "}
@@ -171,7 +171,7 @@ function Home() {
               if (!endId) setEndId(item.id);
               return (
                 <span style={{ color: "red" }} key={item.id}>
-                  {item.endQuestDate}
+                  {item.endQuestDate.split("-").reverse().join("-")}
                 </span>
               );
             })}
@@ -181,14 +181,12 @@ function Home() {
         {startDate.length !== 0 && endDate.length !== 0 && (
           <Link
             to={{
-              pathname: "/MyCalendar",
-              state: {
-                dateSt: startDate[0].startQuestDate,
-                dateEd: endDate[0].endQuestDate,
-              },
+              pathname: "/myCalendar",
+              // state: {
+              //   dateSt: "rahul",
+              // },
             }}
           >
-            {console.log(startDate[0].startQuestDate)}
             <button1>Lets start &rarr;</button1>
           </Link>
         )}
