@@ -24,7 +24,7 @@ function Progress(props) {
     // console.log(props.startdate.split("-"));
     const formattedDateSt = props.startdate.split("-").reverse().join("-");
     getDaysBetweenDates(new Date(formattedDateSt), new Date());
-  }, [props.dateSt]);
+  }, []);
   const data = [
     { name: "Competed", challenge: props.count, fill: "green" },
     { name: "Not completed", challenge: days - props.count, fill: "#FF6384" },
@@ -32,10 +32,10 @@ function Progress(props) {
 
   return (
     <div>
-      <h4>
+      <h4 className="d-flex justify-content-center">
         Your Progress is {props.count} out of {days} days
       </h4>
-      <PieChart width={440} height={270}>
+      <PieChart width={550} height={270}>
         <Tooltip />
         <Pie
           data={data}

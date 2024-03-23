@@ -59,12 +59,17 @@ function AddGoals() {
       >
         <h5 className="">Add Monthy Goal</h5>
         <div className="d-flex ">
-          <input
-            style={{ width: "250px", cursor: "pointer" }}
+          <textarea
+            rows="1"
+            cols="29"
+            wrap="soft"
             type="text"
-            className="form-control "
             placeholder="enter your goal....."
             value={content}
+            style={{
+              border: "2px solid green",
+              borderRadius: "5px 0px 0px 5px",
+            }}
             onChange={(e) => {
               setContent(e.target.value);
             }}
@@ -92,11 +97,11 @@ function AddGoals() {
                 <div
                   style={{
                     width: "310px",
-
                     padding: "5px",
                     border: "2px solid green",
                     borderRadius: "5px 0px 0px 5px",
                     color: "green",
+                    wordWrap: "break-word",
                   }}
                 >
                   {item.text.toUpperCase()}

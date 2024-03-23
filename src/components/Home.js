@@ -22,6 +22,7 @@ function Home() {
   const endCollectionRef = collection(db, "enddate");
   const [st, setSt] = useState("");
   const [ed, setEd] = useState("");
+
   const fetchStartDate = async () => {
     const data = await getDocs(startCollectionRef);
     const filteredData = data.docs.map((doc) => ({
@@ -29,7 +30,9 @@ function Home() {
       id: doc.id,
     }));
 
-    setStartDate(filteredData);
+    if (filteredData.length !== 0) {
+      setStartDate(filteredData);
+    }
   };
 
   const fetchEndDate = async () => {
@@ -39,7 +42,9 @@ function Home() {
       id: doc.id,
     }));
 
-    setEndDate(filteredData);
+    if (filteredData.length !== 0) {
+      setEndDate(filteredData);
+    }
   };
 
   const setStartDateInFirestore = async (date) => {
@@ -79,7 +84,7 @@ function Home() {
   useEffect(() => {
     fetchStartDate();
     fetchEndDate();
-  }, []);
+  }, [startDate]);
   const deleteDate = async (id, x) => {
     const text = doc(db, x, id);
     await deleteDoc(text);
@@ -146,14 +151,16 @@ function Home() {
             {endDate.length === 0 ? "Set" : "Edit"}
           </button2>
         </div>
-        <button1
-          onClick={() => {
-            deleteDate(startId, "startdate");
-            deleteDate(endId, "enddate");
-          }}
-        >
-          Delete
-        </button1>
+        {startDate.length !== 0 && endDate.length !== 0 && (
+          <button1
+            onClick={() => {
+              deleteDate(startId, "startdate");
+              deleteDate(endId, "enddate");
+            }}
+          >
+            Delete
+          </button1>
+        )}
 
         {startDate.length !== 0 && endDate.length !== 0 && (
           <div>

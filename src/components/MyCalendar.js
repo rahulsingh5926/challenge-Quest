@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AddGoals from "./AddGoals";
 import EverdayGoal from "./EverdayGoal";
 // import weeklyGoal from "./WeeklyGoal";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { db } from "./firebase";
 import {
   collection,
@@ -34,6 +34,7 @@ function MyCalendar() {
   const [count, setCount] = useState(0);
   const [dateSt, setDateSt] = useState("");
   const [dateEd, setDateEd] = useState("");
+  const [deleteCond, setDeleteCond] = useState(false);
   const months = [
     "January",
     "February",
@@ -48,7 +49,7 @@ function MyCalendar() {
     "November",
     "December",
   ];
-  console.log(months.includes("march"));
+
   const startCollectionRef = collection(db, "startdate");
   const endCollectionRef = collection(db, "enddate");
   const location = useLocation();
@@ -60,7 +61,9 @@ function MyCalendar() {
       id: doc.id,
     }));
 
-    setDateSt(filteredData[0].startQuestDate.split("-").reverse().join("-"));
+    if (filteredData.length >= 1) {
+      setDateSt(filteredData[0].startQuestDate.split("-").reverse().join("-"));
+    }
   };
 
   const fetchEndDate = async () => {
@@ -70,7 +73,9 @@ function MyCalendar() {
       id: doc.id,
     }));
 
-    setDateEd(filteredData[0].endQuestDate.split("-").reverse().join("-"));
+    if (filteredData.length >= 1) {
+      setDateEd(filteredData[0].endQuestDate.split("-").reverse().join("-"));
+    }
   };
   function update() {
     setIndex(31);
@@ -135,12 +140,6 @@ function MyCalendar() {
 
     manipulate();
   }
-
-  useEffect(() => {
-    update();
-    fetchStartDate();
-    fetchEndDate();
-  }, []);
 
   const manipulate = () => {
     // Get the first day of the month
@@ -267,23 +266,48 @@ function MyCalendar() {
     clickOn();
   }, []);
   const [calendar, setCalendar] = useState(true);
+  const vanish = async (x) => {
+    const startCollectionRef = collection(db, x); // Reference to the "startdate" collection
+    const querySnapshot = await getDocs(startCollectionRef); // Get all documents in the collection
 
+    // Delete each document in the collection
+    querySnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+    setDateSt("");
+    setDateEd("");
+  };
+  const deleteEntire = () => {
+    let a = ["startdate", "enddate", "accomplish"];
+    a.forEach((elem) => {
+      vanish(elem);
+    });
+  };
+  useEffect(() => {
+    update();
+    fetchStartDate();
+    fetchEndDate();
+  }, [dateSt]);
   return (
-    <div style={{ position: "relative" }}>
+    <div>
       <h1 className="d-grid  justify-content-center ">ChallengeQuest</h1>
-      <p
-        className="d-flex  justify-content-center "
-        style={{ fontWeight: "bold", fontSize: "1.2rem" }}
-      >
-        ( Start on:
-        <span style={{ color: "red", marginRight: "1rem" }}>{dateSt}</span> Ends
-        on: <span style={{ color: "red" }}>{dateEd}</span>)
-      </p>
+      {dateSt && dateEd && (
+        <p
+          className="d-flex  justify-content-center "
+          style={{ fontWeight: "bold", fontSize: "1.2rem" }}
+        >
+          ( Start on:
+          <span style={{ color: "red", marginRight: "1rem" }}>
+            {dateSt}
+          </span>{" "}
+          Ends on: <span style={{ color: "red" }}>{dateEd}</span>)
+        </p>
+      )}
 
       <div className="container-fluid d-flex justify-content-center align-item-center">
         <div className="row">
           <div className="col">
-            <div className="d-flex align-item-center justify-content-center my-2">
+            <div className="d-flex align-item-center justify-content-center ">
               <button1
                 className="calendar-goals"
                 onClick={() => {
@@ -292,6 +316,15 @@ function MyCalendar() {
               >
                 {calendar ? "Goals" : "Calendar"}
               </button1>
+              <Link to="/">
+                <button1
+                  className="calendar-goals"
+                  style={{ backgroundColor: "red" }}
+                  onClick={deleteEntire}
+                >
+                  Quit
+                </button1>
+              </Link>
             </div>
             {calendar && (
               <div class="calendar-container mx-5">
@@ -407,7 +440,7 @@ function MyCalendar() {
                         for (let i = 0; i < clickedDates.length; i++) {
                           if (clickedDates[i].b === id) {
                             x = clickedDates[i].id;
-                            console.log(x);
+
                             break;
                           }
                         }
@@ -445,8 +478,12 @@ function MyCalendar() {
               {!calendar && <WeeklyGoals />}
             </div>
           </div>
-          <div className="col ">
-            <div>{<Progress count={count} startdate={dateSt} />}</div>
+          <div className="col">
+            <div>
+              {dateSt && dateEd && (
+                <Progress count={count} startdate={dateSt} />
+              )}
+            </div>
             {calendar && <EverdayGoal />}
           </div>
         </div>
