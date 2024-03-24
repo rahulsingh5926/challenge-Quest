@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import backgroundImg from "./img/background_img.png";
 import { db } from "./firebase";
 import {
   collection,
@@ -32,7 +33,7 @@ function Home() {
 
     if (filteredData.length !== 0) {
       setStartDate(filteredData);
-    }
+    } else setStartDate([]);
   };
 
   const fetchEndDate = async () => {
@@ -44,6 +45,8 @@ function Home() {
 
     if (filteredData.length !== 0) {
       setEndDate(filteredData);
+    } else {
+      setEndDate([]);
     }
   };
 
@@ -81,10 +84,6 @@ function Home() {
     }
   };
 
-  useEffect(() => {
-    fetchStartDate();
-    fetchEndDate();
-  }, [startDate]);
   const deleteDate = async (id, x) => {
     const text = doc(db, x, id);
     await deleteDoc(text);
@@ -102,26 +101,37 @@ function Home() {
       ? setEndDateInFirestore(endQuestDate)
       : updateEndDate(endId, endQuestDate);
   };
-
+  useEffect(() => {
+    fetchStartDate();
+    fetchEndDate();
+  }, []);
   return (
-    <>
+    <div
+      style={{
+        backgroundImage: `url(${backgroundImg})`,
+        // backgroundRepeat: "no-repeat",
+        className: "img-fluid",
+      }}
+    >
       <div className="d-flex justify-content-center align-items-center flex-column vh-100">
-        <h1>ChallengeQuest</h1>
-        <p className="px-5 text-center">
+        <h1 style={{ color: "green" }}>ChallengeQuest</h1>
+        <p className="px-5 text-center" style={{ fontSize: "1.5rem" }}>
           Welcome to our challenge quest website, where you embark on exciting
           journeys towards your goals! Are you ready to take on a challenge and
           push your limits? Whether you're aiming to improve your fitness,
           develop new habits, or conquer personal milestones, our platform is
           here to support you every step of the way.
         </p>
-        <p className="px-5 text-center">
+        <p className="px-5 text-center" style={{ fontSize: "1.5rem" }}>
           To begin your adventure, simply set the start date and end date of
           your challenge. Whether you're looking for a short-term sprint or a
           long-term commitment, our customizable challenges allow you to tailor
           your journey to fit your schedule and preferences.
         </p>
         <div className="d-flex justify-content-center align-items-center">
-          <label htmlFor="start-date">Start Date:</label>
+          <label htmlFor="start-date" style={{ fontWeight: "bolder" }}>
+            Start Date:
+          </label>
           <input
             style={{ width: "150px", cursor: "pointer" }}
             type="date"
@@ -135,7 +145,10 @@ function Home() {
             {startDate.length === 0 ? "Set" : "Edit"}
           </button2>
 
-          <label htmlFor="end-date" style={{ marginLeft: "50px" }}>
+          <label
+            htmlFor="end-date"
+            style={{ marginLeft: "50px", fontWeight: "bolder" }}
+          >
             End Date:
           </label>
           <input
@@ -157,6 +170,7 @@ function Home() {
               deleteDate(startId, "startdate");
               deleteDate(endId, "enddate");
             }}
+            style={{ backgroundColor: "red" }}
           >
             Delete
           </button1>
@@ -168,7 +182,10 @@ function Home() {
             {startDate.map((item) => {
               if (!startId) setStartId(item.id);
               return (
-                <span style={{ color: "red" }} key={item.id}>
+                <span
+                  style={{ color: "green", fontWeight: "bolder" }}
+                  key={item.id}
+                >
                   {item.startQuestDate.split("-").reverse().join("-")}
                 </span>
               );
@@ -177,7 +194,10 @@ function Home() {
             {endDate.map((item) => {
               if (!endId) setEndId(item.id);
               return (
-                <span style={{ color: "red" }} key={item.id}>
+                <span
+                  style={{ color: "green", fontWeight: "bolder" }}
+                  key={item.id}
+                >
                   {item.endQuestDate.split("-").reverse().join("-")}
                 </span>
               );
@@ -194,11 +214,11 @@ function Home() {
               // },
             }}
           >
-            <button1>Lets start &rarr;</button1>
+            <button1>&rarr;</button1>
           </Link>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

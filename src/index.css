@@ -166,7 +166,7 @@ button1:hover span:after {
 button2 {
   --color: green;
   font-family: inherit;
-
+ cursor: pointer;
   width: 6em;
   height: 2em;
   line-height: 2.5em;
@@ -185,6 +185,7 @@ button2 {
 }
 
 button2:before {
+   cursor: pointer;
   content: "";
   position: absolute;
   z-index: -1;
