@@ -23,7 +23,7 @@ function Home() {
   const endCollectionRef = collection(db, "enddate");
   const [st, setSt] = useState("");
   const [ed, setEd] = useState("");
-
+  const [cond, setCond] = useState(true);
   const fetchStartDate = async () => {
     const data = await getDocs(startCollectionRef);
     const filteredData = data.docs.map((doc) => ({
@@ -33,7 +33,8 @@ function Home() {
 
     if (filteredData.length !== 0) {
       setStartDate(filteredData);
-    } else setStartDate([]);
+      setStartId(filteredData[0].id);
+    }
   };
 
   const fetchEndDate = async () => {
@@ -45,8 +46,7 @@ function Home() {
 
     if (filteredData.length !== 0) {
       setEndDate(filteredData);
-    } else {
-      setEndDate([]);
+      setEndId(filteredData[0].id);
     }
   };
 
@@ -91,6 +91,7 @@ function Home() {
     setEndDate([]);
   };
   const handleStartToggle = () => {
+    console.log(startId);
     startDate.length === 0
       ? setStartDateInFirestore(startQuestDate)
       : updateStartDate(startId, startQuestDate);
@@ -105,6 +106,41 @@ function Home() {
     fetchStartDate();
     fetchEndDate();
   }, []);
+  const isValid = (d1, d2) => {
+    if (d1 !== "" && d2 !== "") {
+      const date1 = d1.split("-");
+      const date2 = d2.split("-");
+      const year1 = Number(date1[0]);
+      const month1 = Number(date1[1]);
+      const day1 = Number(date1[2]);
+      const year2 = Number(date2[0]);
+      const month2 = Number(date2[1]);
+      const day2 = Number(date2[2]);
+      // console.log(day2);
+      // if (year2 > year1) {
+      //   return true;
+      // } else if (month2 > month1) {
+      //   return true;
+      // } else if (day2 > day1) {
+      //   return true;
+      // } else {
+      //   deleteDate(startDate[0].id, "startdate");
+      //   deleteDate(endDate[0].id, "enddate");
+      //   return false;
+      // }
+      const date1Obj = new Date(year1, month1 - 1, day1);
+      const date2Obj = new Date(year2, month2 - 1, day2);
+
+      // Compare the two Date objects to determine if d2 is after d1
+      if (date2Obj > date1Obj) {
+        return true;
+      } else {
+        deleteDate(startId, "startdate");
+        deleteDate(endId, "enddate");
+        alert("Invalid Input");
+      }
+    }
+  };
   return (
     <div
       style={{
@@ -176,47 +212,52 @@ function Home() {
           </button1>
         )}
 
-        {startDate.length !== 0 && endDate.length !== 0 && (
-          <div>
-            The start date of the challenge is{" "}
-            {startDate.map((item) => {
-              if (!startId) setStartId(item.id);
-              return (
-                <span
-                  style={{ color: "green", fontWeight: "bolder" }}
-                  key={item.id}
-                >
-                  {item.startQuestDate.split("-").reverse().join("-")}
-                </span>
-              );
-            })}{" "}
-            and the end date of the challenge is{" "}
-            {endDate.map((item) => {
-              if (!endId) setEndId(item.id);
-              return (
-                <span
-                  style={{ color: "green", fontWeight: "bolder" }}
-                  key={item.id}
-                >
-                  {item.endQuestDate.split("-").reverse().join("-")}
-                </span>
-              );
-            })}
-          </div>
-        )}
+        {startDate.length !== 0 &&
+          endDate.length !== 0 &&
+          isValid(startDate[0].startQuestDate, endDate[0].endQuestDate) && (
+            <div>
+              The start date of the challenge is{" "}
+              {startDate.map((item) => {
+                if (!startId) setStartId(item.id);
+                return (
+                  <span
+                    style={{ color: "green", fontWeight: "bolder" }}
+                    key={item.id}
+                  >
+                    {item.startQuestDate.split("-").reverse().join("-")}
+                  </span>
+                );
+              })}{" "}
+              and the end date of the challenge is{" "}
+              {endDate.map((item) => {
+                // if (!endId) setEndId(item.id);
+                return (
+                  <span
+                    style={{ color: "green", fontWeight: "bolder" }}
+                    key={item.id}
+                  >
+                    {item.endQuestDate.split("-").reverse().join("-")}
+                  </span>
+                );
+              })}
+            </div>
+          )}
 
-        {startDate.length !== 0 && endDate.length !== 0 && (
-          <Link
-            to={{
-              pathname: "/myCalendar",
-              // state: {
-              //   dateSt: "rahul",
-              // },
-            }}
-          >
-            <button1>&rarr;</button1>
-          </Link>
-        )}
+        {startDate.length !== 0 &&
+          endDate.length !== 0 &&
+          startDate.length !== 0 &&
+          endDate.length !== 0 && (
+            <Link
+              to={{
+                pathname: "/myCalendar",
+                // state: {
+                //   dateSt: "rahul",
+                // },
+              }}
+            >
+              <button1>&rarr;</button1>
+            </Link>
+          )}
       </div>
     </div>
   );
