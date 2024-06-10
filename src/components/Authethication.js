@@ -17,14 +17,15 @@ const handleSubmit = async (e) => {
       auth,
       mail,
       password
-    ).then(async(value)=>{await alert("success")});
+    )
 
     // Pull out user's data from the userCredential property
     // setMail("");
     // setPassword("");
     // const user = userCredential.user;
     //  setUserId(user.uid);
-    redirect("/");
+   alert("success");
+   redirect("/");
     
     
   } catch (err) {

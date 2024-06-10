@@ -28,23 +28,19 @@ function Login() {
            auth,
            email,
            password
-         ).then(async (value) => {
-           await alert("success");
-           navigate("/")
-          //  const user = userCredential.user;
-          //  setUserId(user.uid);
-          //  console.log(userId);
-         });;
+         );
 
-         // The signed-in user info
-         const user = userCredential.user;
-       } catch (err) {
+        //  // The signed-in user info
+        //  const user = userCredential.user;
+        alert("success");
+        navigate("/");
+       }catch  (err) {
          // Handle Errors here.
          const errorMessage = err.message;
          const errorCode = err.code;
 
          setError(true);
-         console.log(errorCode);
+        
 
          switch (errorCode) {
            case "auth/invalid-email":
@@ -93,6 +89,7 @@ function Login() {
                         type="mail"
                         id="typemailX"
                         class="form-control form-control-lg"
+                     
                         onChange={(e) => {
                           setEmail(e.target.value);
                         }}

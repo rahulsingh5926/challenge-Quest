@@ -25,10 +25,10 @@ function Home() {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setUserId(user.uid);
-      } else {
-        navigate("/authentication");
-      }
+        setUserId(user.uid);}
+      // } else {
+      //   navigate("/authentication");
+      // }
     });
   }, [auth, navigate]);
 
@@ -94,7 +94,7 @@ function Home() {
   };
   const handleLogout = async () => {
     await signOut(auth);
-    navigate("/authentication");
+    
   };
   const updateEndDate = async (id, newValue) => {
     if (userId && newValue) {
@@ -178,32 +178,35 @@ function Home() {
           you're looking for a short-term sprint or a long-term commitment, our customizable
           challenges allow you to tailor your journey to fit your schedule and preferences.
         </p>
-        <div className="d-flex justify-content-center align-items-center">
-          <label htmlFor="start-date" style={{ fontWeight: "bolder" }}>
-            Start Date:
-          </label>
-          <input
-            style={{ width: "150px", cursor: "pointer" }}
-            type="date"
-            className="form-control"
-            placeholder="start date"
-            onChange={(e) => setStartQuestDate(e.target.value)}
-            value={startQuestDate}
-          />
-          <button2 onClick={handleStartToggle}>{startDate.length === 0 ? "Set" : "Edit"}</button2>
-          <label htmlFor="end-date" style={{ marginLeft: "50px", fontWeight: "bolder" }}>
-            End Date:
-          </label>
-          <input
-            style={{ width: "150px", cursor: "pointer" }}
-            type="date"
-            className="form-control border-orange-600"
-            placeholder="end date"
-            onChange={(e) => setEndQuestDate(e.target.value)}
-            value={endQuestDate}
-          />
-          <button2 onClick={handleEndToggle}>{endDate.length === 0 ? "Set" : "Edit"}</button2>
-        </div>
+        {userId && 
+          <div className="d-flex justify-content-center align-items-center">
+            <label htmlFor="start-date" style={{ fontWeight: "bolder" }}>
+              Start Date:
+            </label>
+            <input
+              style={{ width: "150px", cursor: "pointer" }}
+              type="date"
+              className="form-control"
+              placeholder="start date"
+              onChange={(e) => setStartQuestDate(e.target.value)}
+              value={startQuestDate}
+            />
+            <button2 onClick={handleStartToggle}>{startDate.length === 0 ? "Set" : "Edit"}</button2>
+            <label htmlFor="end-date" style={{ marginLeft: "50px", fontWeight: "bolder" }}>
+              End Date:
+            </label>
+            <input
+              style={{ width: "150px", cursor: "pointer" }}
+              type="date"
+              className="form-control border-orange-600"
+              placeholder="end date"
+              onChange={(e) => setEndQuestDate(e.target.value)}
+              value={endQuestDate}
+            />
+            <button2 onClick={handleEndToggle}>{endDate.length === 0 ? "Set" : "Edit"}</button2>
+          </div>
+        }
+        {!userId && <h2 style={{color:"green"}}>Please signup to start</h2>}
         {startDate.length !== 0 && endDate.length !== 0 && (
           <button1
             onClick={() => {
