@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { Link, NavLink,redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const auth=getAuth();
 function Authethication() {
+  const navigate = useNavigate();
   const[mail,setMail]=useState("");
   const[password,setPassword]=useState("");
     const [error, setError] = useState(false);
@@ -25,7 +26,7 @@ const handleSubmit = async (e) => {
     // const user = userCredential.user;
     //  setUserId(user.uid);
    alert("success");
-   redirect("/");
+   navigate("/");
     
     
   } catch (err) {
