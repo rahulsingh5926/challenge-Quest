@@ -8,12 +8,12 @@ import {
   doc,
 } from "firebase/firestore";
 
-function AddGoals() {
+function AddGoals(props) {
   let st;
   const [content, setContent] = useState("");
   const [list, setList] = useState([]);
 
-  const a = collection(db, "monthyGoal");
+  const a = collection(db, `${props.id}_monthyGoal`);
 
   const getGoals = async () => {
     const data = await getDocs(a);
@@ -24,7 +24,7 @@ function AddGoals() {
     setList(filteredData);
   };
   const deleteContent = async (id) => {
-    const text = doc(db, "monthyGoal", id);
+    const text = doc(db, `${props.id}_monthyGoal`, id);
     await deleteDoc(text);
     getGoals();
   };

@@ -1,14 +1,15 @@
 * {
   font-family: "Poppins", sans-serif;
+
 }
 
 body {
-  min-height: 100vh;
+  
   display: grid;
+  background-color:#58D93E;
   /* justify-content: center;
   align-items: center; */
-  background-color: antiquewhite;
-  overflow-x: hidden;
+
 }
 
 .calendar-container {

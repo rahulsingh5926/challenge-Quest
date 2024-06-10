@@ -8,12 +8,12 @@ import {
   doc,
 } from "firebase/firestore";
 
-function WeeklyGoal() {
+function WeeklyGoal(props) {
   let st;
   const [content, setContent] = useState("");
   const [list, setList] = useState([]);
 
-  const a = collection(db, "weeklyGoal");
+  const a = collection(db, `${props.id}_weeklyGoal`);
 
   const getGoals = async () => {
     const data = await getDocs(a);
@@ -24,7 +24,7 @@ function WeeklyGoal() {
     setList(filteredData);
   };
   const deleteContent = async (id) => {
-    const text = doc(db, "weeklyGoal", id);
+    const text = doc(db, `${props.id}_weeklyGoal`, id);
     await deleteDoc(text);
     getGoals();
   };

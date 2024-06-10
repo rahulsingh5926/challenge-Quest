@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AddGoals from "./AddGoals";
 import EverdayGoal from "./EverdayGoal";
 // import weeklyGoal from "./WeeklyGoal";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useParams } from "react-router-dom";
 import { db } from "./firebase";
 import {
   collection,
@@ -17,7 +17,9 @@ let array;
 let i = 0;
 
 function MyCalendar() {
-  const a = collection(db, "accomplish");
+  const {id}=useParams();
+  console.log(id);
+  const a = collection(db, `${id}_accomplish`);
 
   const [currMonth, setCurrMonth] = useState("");
   const [currYear, setCurrYear] = useState("");
@@ -50,8 +52,8 @@ function MyCalendar() {
     "December",
   ];
 
-  const startCollectionRef = collection(db, "startdate");
-  const endCollectionRef = collection(db, "enddate");
+  const startCollectionRef = collection(db, `${id}_startdate`);
+  const endCollectionRef = collection(db, `${id}_enddate`);
   const location = useLocation();
   console.log(location);
   const fetchStartDate = async () => {
@@ -257,7 +259,7 @@ function MyCalendar() {
     clickOn();
   };
   const deleteEvent = async (id) => {
-    const text = doc(db, "accomplish", id);
+    const text = doc(db, `${id}_accomplish`, id);
     await deleteDoc(text);
     clickOn();
   };
@@ -278,7 +280,7 @@ function MyCalendar() {
     setDateEd("");
   };
   const deleteEntire = () => {
-    let a = ["startdate", "enddate", "accomplish"];
+    let a = [`${id}_startdate`, `${id}_enddate`, `${id}_accomplish`];
     a.forEach((elem) => {
       vanish(elem);
     });
@@ -474,8 +476,8 @@ function MyCalendar() {
             )}
 
             <div className="d-flex gap-4">
-              {!calendar && <AddGoals />}
-              {!calendar && <WeeklyGoals />}
+              {!calendar && <AddGoals id={id}/>}
+              {!calendar && <WeeklyGoals id={id}/>}
             </div>
           </div>
           <div className="col">
@@ -484,7 +486,7 @@ function MyCalendar() {
                 <Progress count={count} startdate={dateSt} />
               )}
             </div>
-            {calendar && <EverdayGoal />}
+            {calendar && <EverdayGoal  id={id}/>}
           </div>
         </div>
       </div>

@@ -1,30 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { db } from "./firebase";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
 
-function EverydayGoal() {
+function EverydayGoal(props) {
   let st;
   const [content, setContent] = useState("");
   const [list, setList] = useState([]);
 
-  const a = collection(db, "everdayGoal");
+  const a = collection(db, `${props.id}_everydayGoal`);
 
-  const getGoals = async () => {
+  const getGoals = async (props) => {  
     const data = await getDocs(a);
     const filteredData = data.docs.map((doc) => ({
-      ...doc.data(),
+      ...doc.data(),      
       id: doc.id,
     }));
     setList(filteredData);
   };
   const deleteContent = async (id) => {
-    const text = doc(db, "everdayGoal", id);
+    const text = doc(db, `${props.id}_everydayGoal`, id);
     await deleteDoc(text);
     getGoals();
   };
