@@ -1,6 +1,11 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About the project
+ Created a  React web application to set and achieve personal
+ challenges, featuring customizable durations and adding daily,
+ weekly, monthly goals with real-time progress tracking.
+ Implemented a responsive and secure application using
+ React.js, Bootstrap for UI design, and Firebase for real-time
+ database and authentication services.
+ Enabled users to track progress and maintain streak
 
 ## Available Scripts
 
