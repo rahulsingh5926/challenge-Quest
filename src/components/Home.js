@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import backgroundImg from "./img/background_img.png";
-import { getAuth, onAuthStateChanged,signOut } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { db } from "./firebase";
 import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ function Home() {
   const [userId, setUserId] = useState(null);
 
   const auth = getAuth();
+
   const navigate = useNavigate();
 
   const toggleForm = () => {
@@ -25,10 +26,8 @@ function Home() {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setUserId(user.uid);}
-      // } else {
-      //   navigate("/authentication");
-      // }
+        setUserId(user.uid);
+      } 
     });
   }, [auth, navigate]);
 
@@ -40,6 +39,7 @@ function Home() {
   }, [userId]);
 
   const fetchStartDate = async () => {
+
     if (userId) {
       const startCollectionRef = collection(db, `${userId}_startdate`);
       const data = await getDocs(startCollectionRef);
@@ -94,7 +94,6 @@ function Home() {
   };
   const handleLogout = async () => {
     await signOut(auth);
-    
   };
   const updateEndDate = async (id, newValue) => {
     if (userId && newValue) {
@@ -178,7 +177,7 @@ function Home() {
           you're looking for a short-term sprint or a long-term commitment, our customizable
           challenges allow you to tailor your journey to fit your schedule and preferences.
         </p>
-        {userId && 
+        {userId && (
           <div className="d-flex justify-content-center align-items-center">
             <label htmlFor="start-date" style={{ fontWeight: "bolder" }}>
               Start Date:
@@ -205,8 +204,8 @@ function Home() {
             />
             <button2 onClick={handleEndToggle}>{endDate.length === 0 ? "Set" : "Edit"}</button2>
           </div>
-        }
-        {!userId && <h2 style={{color:"green"}}>Please signup to start</h2>}
+        )}
+        {!userId && <h2 style={{ color: "green" }}>Please signup to start</h2>}
         {startDate.length !== 0 && endDate.length !== 0 && (
           <button1
             onClick={() => {
