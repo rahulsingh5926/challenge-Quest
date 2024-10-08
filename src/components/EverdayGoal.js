@@ -43,7 +43,7 @@ function EverydayGoal(props) {
     >
       <div
         style={{
-          width: "400px",
+          width: "500px",
           minHeight: "312px",
           backgroundColor: "white",
           borderRadius: "10px",

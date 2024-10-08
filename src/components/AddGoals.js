@@ -49,7 +49,7 @@ function AddGoals(props) {
     >
       <div
         style={{
-          width: "400px",
+          width: "500px",
           minHeight: "300px",
           backgroundColor: "white",
           borderRadius: "10px",

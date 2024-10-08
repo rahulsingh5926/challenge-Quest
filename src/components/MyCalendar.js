@@ -299,10 +299,8 @@ function MyCalendar() {
           style={{ fontWeight: "bold", fontSize: "1.2rem" }}
         >
           ( Start on:
-          <span style={{ color: "red", marginRight: "1rem" }}>
-            {dateSt}
-          </span>{" "}
-          Ends on: <span style={{ color: "red" }}>{dateEd}</span>)
+          <span style={{ color: "red", marginRight: "1rem" }}>{dateSt}</span> Ends on:{" "}
+          <span style={{ color: "red" }}>{dateEd}</span>)
         </p>
       )}
 
@@ -343,25 +341,15 @@ function MyCalendar() {
                           borderRadius: "4px",
                         }}
                       ></div>
-                      <div style={{ fontSize: "1rem" }}>
-                        -Click on to check in
-                      </div>
+                      <div style={{ fontSize: "1rem" }}>-Click on to check in</div>
                     </div>
                   </p>
 
                   <div class="calendar-navigation">
-                    <span
-                      id="calendar-prev"
-                      class="material-symbols-rounded "
-                      onClick={updatePrev}
-                    >
+                    <span id="calendar-prev" class="material-symbols-rounded " onClick={updatePrev}>
                       &lt;
                     </span>
-                    <span
-                      id="calendar-next"
-                      class="material-symbols-rounded"
-                      onClick={updateNext}
-                    >
+                    <span id="calendar-next" class="material-symbols-rounded" onClick={updateNext}>
                       &gt;
                     </span>
                   </div>
@@ -385,14 +373,10 @@ function MyCalendar() {
                     {currDates.map((elem) => {
                       let day1 = parseInt(dateSt[0] + dateSt[1]);
                       let month1 = parseInt(dateSt[3] + dateSt[4]);
-                      let year1 = parseInt(
-                        dateSt[6] + dateSt[7] + dateSt[8] + dateSt[9]
-                      );
+                      let year1 = parseInt(dateSt[6] + dateSt[7] + dateSt[8] + dateSt[9]);
                       let day2 = parseInt(dateEd[0] + dateEd[1]);
                       let month2 = parseInt(dateEd[3] + dateEd[4]);
-                      let year2 = parseInt(
-                        dateEd[6] + dateEd[7] + dateEd[8] + dateEd[9]
-                      );
+                      let year2 = parseInt(dateEd[6] + dateEd[7] + dateEd[8] + dateEd[9]);
 
                       let isActive =
                         (year === year1 &&
@@ -415,15 +399,9 @@ function MyCalendar() {
                           elem <= day2 &&
                           month > month1 - 1 &&
                           month === month2 - 1) ||
-                        (elem >= day1 &&
-                          month >= month1 - 1 &&
-                          year === year1 &&
-                          year < year2) ||
+                        (elem >= day1 && month >= month1 - 1 && year === year1 && year < year2) ||
                         (year > year1 && year < year2) ||
-                        (year > year1 &&
-                          year === year2 &&
-                          elem <= day2 &&
-                          month <= month2 - 1)
+                        (year > year1 && year === year2 && elem <= day2 && month <= month2 - 1)
                           ? "borderActive"
                           : "";
                       console.log(year1);
@@ -435,9 +413,7 @@ function MyCalendar() {
                           : "";
                       let x;
                       const id = `${elem}_${month}_${year}`;
-                      const isClicked = clickedDates.some(
-                        (item) => item.b === id
-                      );
+                      const isClicked = clickedDates.some((item) => item.b === id);
                       if (isClicked) {
                         for (let i = 0; i < clickedDates.length; i++) {
                           if (clickedDates[i].b === id) {
@@ -450,14 +426,9 @@ function MyCalendar() {
                       return (
                         <li
                           id={id}
-                          className={`${isToday} ${
-                            isClicked === true ? "click" : ""
-                          } ${isActive}`}
+                          className={`${isToday} ${isClicked === true ? "click" : ""} ${isActive}`}
                           onClick={() => {
-                            if (isToday)
-                              isClicked === false
-                                ? setClick(id)
-                                : deleteEvent(x);
+                            if (isToday) isClicked === false ? setClick(id) : deleteEvent(x);
                           }}
                         >
                           {" "}
@@ -475,18 +446,13 @@ function MyCalendar() {
               </div>
             )}
 
-            <div className="d-flex gap-4">
-              {!calendar && <AddGoals id={id}/>}
-              {!calendar && <WeeklyGoals id={id}/>}
+            {!calendar && <AddGoals id={id} />}
+            {!calendar && <WeeklyGoals id={id} />}
+
+            <div className="d-flex justify-content-center m-4">
+              {dateSt && dateEd && <Progress count={count} startdate={dateSt} />}
             </div>
-          </div>
-          <div className="col">
-            <div>
-              {dateSt && dateEd && (
-                <Progress count={count} startdate={dateSt} />
-              )}
-            </div>
-            {calendar && <EverdayGoal  id={id}/>}
+            {calendar && <EverdayGoal id={id} />}
           </div>
         </div>
       </div>
